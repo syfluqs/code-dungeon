@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget id="SOFTEMPLRU3PROD000000022" version="3.00" width="200" height="173" 
+xmlns="http://www.w3.org/ns/widgets">
+<title>HTC Clock</title>
+<description>HTC Clock</description>
+<icon src="icon.png"></icon>
+<content src="index.html"/>
+<access network="no"/>
+</widget>

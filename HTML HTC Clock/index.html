@@ -1,0 +1,359 @@
+<html>
+<head>
+	<title>HTC Clock</title>
+	<style type="text/css">
+	
+	html
+	{
+	height:173px;
+	width:200px;
+	}
+	
+	
+	
+	.planets
+	{
+	position:absolute;
+	height:173px;
+	width:256px;
+	margin-top:-10px;
+	margin-left:-40px;
+	float:left;
+	z-index:1;
+	}
+	body {
+	position:absolute;
+		background-image: url(img/back2.png);
+		background-repeat: no-repeat;
+		margin-top:0px;
+		margin-left:10px;
+	}
+	.bg
+	{
+	position:absolute;
+		background-image: url(img/bg.png);
+		background-repeat: no-repeat;
+		height:115px;
+		width:203px;
+		margin-left:0px;
+		margin-top:0px;
+	}
+	.h6
+	{
+	position:absolute;
+	margin-left:-160px;
+	margin-top:74px;
+	}
+	.img
+	{
+	position:absolute;
+	margin-left:7.5px;
+	margin-top:16px;
+	}
+	.city
+	{
+	position:absolute;
+	margin-left:2px;
+	margin-top:150px;
+	color:white;
+	z-index:-10;
+	}
+	
+	.cal
+	{
+	position:absolute;
+	margin-left:95px;
+	margin-top:150px;
+	color:white;
+	width:100px;
+	z-index:-10;
+	}
+	
+	.randomplanet1
+	{
+	position:absolute;
+	margin-left:-265px;
+	margin-top:-15px;
+	z-index:0;
+	}
+	.randomplanet2
+	{
+	position:absolute;
+	margin-left:-155px;
+	margin-top:-15px;
+	z-index:0;
+	}
+
+	</style>
+</head>
+
+
+
+<body topmargin=16 leftmargin=8>
+
+<div class="planets">
+<IMG SRC="img/digitblank.gif" border=0 name="planet">
+</div>
+
+<div class="bg">
+<div class="img">
+<IMG SRC="img/digitblank.gif" border=0 name="h1"><IMG SRC="img/digitblank.gif" border=0 name="h2"><IMG SRC="img/digitblank.gif" border=0 name="colon"><IMG SRC="img/digitblank.gif" border=0 name="m1"><IMG SRC="img/digitblank.gif" border=0 name="m2"><IMG SRC="img/digitblank.gif" border=0 name="h6" class="h6"><IMG SRC="img/digitblank.gif" border=0 name="randomplanet1" class="randomplanet1"><IMG SRC="img/digitblank.gif" border=0 name="randomplanet2" class="randomplanet2">
+</div></div>
+
+<div id="cal" class="cal">Hello</div>
+
+<div class="city">
+<b>Kapurthala</b>
+</div>
+
+
+
+<script LANGUAGE="JavaScript">
+
+	
+	
+
+
+  if (document.images) { 
+    digit1 = new Image; 
+    digit1.src = "img/1.png"; 
+	digit2 = new Image; 
+    digit2.src = "img/2.png";
+	digit3 = new Image; 
+    digit3.src = "img/3.png";
+	digit4 = new Image; 
+    digit4.src = "img/4.png";
+	digit5 = new Image; 
+    digit5.src = "img/5.png";
+	digit6 = new Image; 
+    digit6.src = "img/6.png";
+	digit7 = new Image; 
+    digit7.src = "img/7.png";
+	digit8 = new Image; 
+    digit8.src = "img/8.png";
+	digit9 = new Image; 
+    digit9.src = "img/9.png";
+	digit0 = new Image; 
+    digit0.src = "img/0.png";
+	digitcolon = new Image;
+	digitcolon.src = "img/c.png";
+	digitblank = new Image;
+	digitblank.src = "img/digitblank.gif";
+	am = new Image;
+	am.src = "img/am.png";
+	pm = new Image;
+	pm.src = "img/pm.png";
+	}
+	
+function UpdateClock(){
+	
+	var hours=00;
+    var time= new Date();
+    hour =(time.getHours());
+	if (hour>12)
+	{
+	hours = hour-12;
+	}
+	else
+	{
+	hours=hour;
+	}
+
+    mins = time.getMinutes();
+	
+    if (!document.images) return;
+	digit = mins % 10;
+    document.images.m2.src=eval("digit"+digit+".src");
+	digit = (mins - (mins % 10))/10;
+	document.images.m1.src=eval("digit"+digit+".src");
+	digit = hours % 10;
+	document.images.h2.src=eval("digit"+digit+".src");
+	digit = (hours - (hours % 10))/10;
+	document.images.h1.src=eval("digit"+digit+".src");
+	document.images.colon.src=digitcolon.src;
+	
+	if (hour>12)
+	{
+	document.images.h6.src=pm.src;
+	}
+	else
+	{
+	document.images.h6.src=am.src;
+	}
+	
+var t= (60-time.getSeconds())*1000;
+	setTimeout("UpdateClock()",t);
+
+  }
+  
+
+   
+   function cal()
+   {
+   var time = new Date();
+   day=time.getDay();
+   var days = new Array();
+   days[0]="Sun";
+   days[1]="Mon";
+   days[2]="Tue";
+   days[3]="Wed";
+   days[4]="Thu";
+   days[5]="Fri";
+   days[6]="Sat";
+   month=time.getMonth();
+   var months= new Array();
+   months[0]="Jan";
+   months[1]="Feb";
+   months[2]="Mar";
+   months[3]="Apr";
+   months[4]="May";
+   months[5]="Jun";
+   months[6]="Jul";
+   months[7]="Aug";
+   months[8]="Sep";
+   months[9]="Oct";
+   months[10]="Nov";
+   months[11]="Dec";
+   
+   
+   return days[day]+",&nbsp;"+months[month]+"&nbsp;"+time.getDate();
+   
+   }
+   
+   function UpdateCal()
+   {
+   var time = new Date();
+   document.getElementById("cal").innerHTML=cal();
+   t= 86400-(time.getHours()*3600)+(time.getMinutes()*60)+time.getSeconds();
+   setTimeout("UpdateCal()",t);
+   }
+
+
+
+function planet()
+{
+var t = new Date();
+var da = t.getDay();
+if (da==6)
+{
+s1 = "saturn";
+s2 = "saturn";
+}
+else
+{
+s1 = "early_morning";
+s2 = "night";
+}
+
+
+
+
+var times = new Array();
+times[0]="img/dawn.png";
+times[1]="img/"+s1+".png";
+times[2]="img/morning2.png";
+times[3]="img/morning.png";
+times[4]="img/evening.png";
+times[5]="img/"+s2+".png";
+times[6]="img/late_night.png";
+times[7]="error";
+
+var i = 
+
+h = t.getHours();
+m = t.getMinutes();
+
+hours = h*100+m;
+if (hours>=0 && hours<500)
+{
+i=6;
+}
+else
+{
+if (hours>=500 && hours<600)
+{
+i=0;
+}
+else
+{
+if (hours>=600 && hours<730)
+{
+i=1;
+}
+else
+{
+if (hours>=730 && hours<=1030)
+{
+i=2;
+}
+else
+{
+if (hours>1030 && hours<=1630)
+{
+i=3;
+}
+else
+{
+if (hours>1630 && hours<=1800)
+{
+i=4;
+}
+else
+{
+if (hours>1800)
+{
+i=5;
+}
+else
+{
+i=7;
+}
+}}}}}}
+
+var randomplanet = new Array();
+randomplanet[0]="img/dawnm.png";
+randomplanet[1]="img/early_morningm.png";
+randomplanet[2]="img/morning2m.png";
+randomplanet[3]="img/morningm.png";
+randomplanet[4]="img/eveningm.png";
+randomplanet[5]="img/nightm.png";
+randomplanet[6]="img/late_nightm.png";
+randomplanet[7]="img/saturnm.png";
+
+var a=0;
+var b=0;
+var x=0;
+while (true)
+{
+a= Math.floor(Math.random()*(randomplanet.length));
+b= Math.floor(Math.random()*(randomplanet.length));
+if (a==i || b==i || a==b)
+{
+continue;
+}
+else
+{
+break;
+}
+}
+
+	randomplanet1 = new Image();
+	randomplanet1.src=randomplanet[a];
+	document.images.randomplanet1.src=randomplanet1.src;
+	randomplanet2 = new Image();
+	randomplanet2.src=randomplanet[b];
+	document.images.randomplanet2.src=randomplanet2.src;
+	sun = new Image();
+	sun.src=times[i];
+	document.images.planet.src=sun.src;
+	var time= (60-t.getSeconds())*1000;
+	setTimeout("planet()", time);
+   }
+
+planet();
+UpdateClock();
+UpdateCal();
+
+</script>
+</body>
+</html>
