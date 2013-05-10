@@ -1,0 +1,7 @@
+#!/bin/bash
+
+font=AndroidClock.ttf
+pointsize=48
+for letter in {0..9}; do
+    convert -font "$font" -antialias -background \#FFFFFF00 -pointsize "$pointsize" -size 28x35 -tile-offset 10x18 label:"$letter" "$letter".png
+done
