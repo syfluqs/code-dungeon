@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget id="SOFTEMPLRU3PROD000000022" version="3.00" width="200" height="173" 
+<widget id="SOFTEMPLRU3PROD000000022" version="0.1" width="202" height="35" 
 xmlns="http://www.w3.org/ns/widgets">
-<title>HTC Clock</title>
-<description>HTC Clock</description>
+<title>Droid Clock v0.1</title>
+<description>Droid Clock by syfluqs</description>
 <icon src="icon.png"></icon>
 <content src="index.html"/>
 <access network="no"/>
