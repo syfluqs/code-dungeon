@@ -1,0 +1,7 @@
+#!/bin/bash
+
+font=Roboto.ttf
+pointsize=12
+for letter in {"Sun,","Mon,","Tue,","Wed,","Thu,","Fri,","Sat,"}; do
+    convert -font "$font" -antialias -fill \#FFFFFF -background \#FFFFFF00 -pointsize "$pointsize" -size 28x14 label:"$letter" "${letter}".png
+done

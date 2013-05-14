@@ -1,21 +1,50 @@
 <html>
 <head>
-	<title>Droid Clock v0.1</title>
+	<title>Droid Clock v0.3</title>
+	
+	<!--
+	Droid Clock v0.3
+	by Syfluqs <syfluqs@gmail.com>
+	
+	This work is licensed under the Creative Commons 
+	Attribution-ShareAlike 	3.0 Unported License. 
+	To view a copy of this license, visit 
+	http://creativecommons.org/licenses/by-sa/3.0/.
+	
+	NOTE:
+	This Javascript widget is specifically designed for 
+	the widget engine preinstalled in the Samsung GT-S3653 
+	phone model. Using it elsewhere needs some modifications.
+	-->
 
 	<style type="text/css">
 	
 	html
 	{
-	height:35px;
+	height:60px;
 	width:202px;
 	}	
 
+	img
+	{
+	padding:0px;
+	margin:0px;
+	}
+
+	
+	.cal
+	{
+	position:relative;
+	margin-top:-8px;
+	margin-right:33px;
+	}
+	
 	</style>
 </head>
 
 
 
-<body>
+<body bgcolor="black">
 
 <div class="img">
 
@@ -26,8 +55,15 @@
 <IMG SRC="font/blank.png" border=0 name="m2">
 <IMG SRC="font/blank.png" border=0 name="ampm" class="ampm">
 
+<br>
+<div class="cal">
+<img src="font/sblank.png" border=0 name="date2" align="right">
+<img src="font/sblank.png" border=0 name="date1" align="right">
+<img src="font/sblank.png" border=0 name="space" align="right">
+<img src="font/sblank.png" border=0 name="month" align="right">
+<img src="font/sblank.png" border=0 name="day" align="right">
 </div>
-
+</div>
 
 
 
@@ -62,6 +98,48 @@
 	am.src = "font/white/am.png";
 	pm = new Image;
 	pm.src = "font/white/pm.png";
+	
+	//days
+	day0 = new Image;
+	day0.src = "font/white/Sun,.png"
+	day1 = new Image;
+	day1.src = "font/white/Mon,.png"
+	day2 = new Image;
+	day2.src = "font/white/Tue,.png"
+	day3 = new Image;
+	day3.src = "font/white/Wed,.png"
+	day4 = new Image;
+	day4.src = "font/white/Thu,.png"
+	day5 = new Image;
+	day5.src = "font/white/Fri,.png"
+	day6 = new Image;
+	day6.src = "font/white/Sat,.png"
+	
+	//months
+	mon0 = new Image;
+	mon0.src = "font/white/Jan.png"
+	mon1 = new Image;
+	mon1.src = "font/white/Feb.png"
+	mon2 = new Image;
+	mon2.src = "font/white/Mar.png"
+	mon3 = new Image;
+	mon3.src = "font/white/Apr.png"
+	mon4 = new Image;
+	mon4.src = "font/white/May.png"
+	mon5 = new Image;
+	mon5.src = "font/white/Jun.png"
+	mon6 = new Image;
+	mon6.src = "font/white/Jul.png"
+	mon7 = new Image;
+	mon7.src = "font/white/Aug.png"
+	mon8 = new Image;
+	mon8.src = "font/white/Sep.png"
+	mon9 = new Image;
+	mon9.src = "font/white/Oct.png"
+	mon10 = new Image;
+	mon10.src = "font/white/Nov.png"
+	mon11 = new Image;
+	mon11.src = "font/white/Dec.png"
 	}
 	
 function UpdateClock(){
@@ -69,6 +147,8 @@ function UpdateClock(){
 	var hours=00;
     var time= new Date();
     hour =(time.getHours());
+    
+    
 	if (hour>12)
 	{
 	hours = hour-12;
@@ -79,6 +159,10 @@ function UpdateClock(){
 	}
 
     mins = time.getMinutes();
+    
+    day = time.getDay();
+    date = time.getDate();
+    month = time.getMonth();
 	
     if (!document.images) return;
 	digit = mins % 10;
@@ -90,6 +174,15 @@ function UpdateClock(){
 	digit = (hours - (hours % 10))/10;
 	document.images.h1.src=eval("digit"+digit+".src");
 	document.images.colon.src=digitcolon.src;
+	digit = day;
+	document.images.day.src=eval("day"+digit+".src");
+	digit = month;
+	document.images.month.src=eval("mon"+digit+".src");
+	digit = (date-(date%10))/10;
+	document.images.date1.src="font/white/R"+digit+".png";
+	digit = date%10;
+	document.images.date2.src="font/white/R"+digit+".png";
+	
 	
 	if (hour>12)
 	{
@@ -99,6 +192,8 @@ function UpdateClock(){
 	{
 	document.images.ampm.src=am.src;
 	}
+	
+	
 	
 var t= (60-time.getSeconds())*1000;
 	setTimeout("UpdateClock()",t);
