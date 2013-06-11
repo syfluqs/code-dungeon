@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
 #mini launcher script: codename-o (Python port)
-version='2.1'
+version='2.2 beta'
 # made by syfluqs <syfluqs@gmail.com>
 
 
 #importing stuff we need.
-import sys,os,subprocess
+import sys,os,subprocess,thread
 from terminal import *
+import Tkinter as tk
 
 #figuring out the arguement(s)
 args = sys.argv[1:]
@@ -26,9 +27,10 @@ editor='gvim '
 musicplayer='deadbeef --play-pause'
 filebrowser='pcmanfm'
 curlocation=os.path.abspath(__file__)
-redir=' 2> /dev/null'
+redir=' 2> /dev/null &'
 out=''
 cmd=''
+tmp=home+'/.o/tmp'
 
 ############################################################################
 # Define all functions here
@@ -45,11 +47,7 @@ def err(a):
 def exe(s):
     #os.system(s+' &')
     try:
-        global cmd
-        global stdout
-        cmd = subprocess.Popen(s, shell=True, stdout=subprocess.PIPE) 
-        global out
-        out = cmd.stdout.read()
+        os.system(s+' &')
     except OSError:
         err('No Such file or directory')
 
@@ -118,12 +116,32 @@ def music():
     exe(musicplayer)
 
 def getnetusage():
-    exe('sudo ifconfig eth0')
-    print out
-    for line in cmd.stdout:
-        if "RX" in line:
-            print line
-        
+    p = subprocess.Popen(['sudo','ifconfig','eth0'],stdout=subprocess.PIPE)
+    for line in p.stdout:
+        if "RX bytes" in line:
+            l = line.split()
+            down = float(l[1].split(':')[1])
+            up = float(l[5].split(':')[1])
+            total=round((up+down)/1000000,2)
+            print str(total)+' MiB'
+
+def netmon():
+    def update_timeText():
+        p = subprocess.Popen(['o','neus'],stdout=subprocess.PIPE)
+        current = p.stdout.read()
+        timeText.configure(text=current)
+        root.after(1000, update_timeText)
+
+    root = tk.Tk()
+    root.wm_title("NetMon")
+    timeText = tk.Label(root, text="", font=("Ubuntu", 12))
+    timeText.pack()
+    update_timeText()
+    root.mainloop()
+    thread.start_new_thread(netmon, ()) 
+
+def netmon_extr():
+    os.system('python <<< \'import '+curlocation+' as o; o.netmon().descendants()\'')
 
 ############################################################################
 # the cmdlist
@@ -140,7 +158,11 @@ cmdlist = {
    'f':'files()',
    'bsend':'bluetooth()',
    'm':'music()',
-   'neus':'getnetusage()'
+   'neus':'getnetusage()',
+   'neon':'os.system(\'sudo ifconfig eth0 up\')',
+   'neof':'os.system(\'sudo ifconfig eth0 down\')',
+   'list':'print cmdlist',
+   'netmon':'netmon_extr()'
     }
 
 ############################################################################
@@ -159,7 +181,7 @@ cmdlist = {
 #processing and running
 if len(args)!=0:
     cmd = args[0]
-    print cmd
+#    print cmd
 #    func=globals()[cmdlist.get(cmd,exe(cmd))]()
 #    getattr(__main__,cmdlist.get(cmd,'exe(cmd+\' &\')'))
     exec cmdlist.get(cmd,'exe(\''+cmd+'\')')
