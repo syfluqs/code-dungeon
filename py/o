@@ -131,7 +131,7 @@ def netmon():
         current = p.stdout.read()
         timeText.configure(text=current)
         root.after(1000, update_timeText)
-
+  
     root = tk.Tk()
     root.wm_title("NetMon")
     timeText = tk.Label(root, text="", font=("Ubuntu", 12))
@@ -141,7 +141,7 @@ def netmon():
     thread.start_new_thread(netmon, ()) 
 
 def netmon_extr():
-    os.system('python <<< \'import '+curlocation+' as o; o.netmon().descendants()\'')
+    os.system(curlocation+' fnetmon &')
 
 ############################################################################
 # the cmdlist
@@ -162,7 +162,8 @@ cmdlist = {
    'neon':'os.system(\'sudo ifconfig eth0 up\')',
    'neof':'os.system(\'sudo ifconfig eth0 down\')',
    'list':'print cmdlist',
-   'netmon':'netmon_extr()'
+   'netmon':'netmon_extr()',
+   'fnetmon':'netmon()'
     }
 
 ############################################################################
@@ -185,5 +186,6 @@ if len(args)!=0:
 #    func=globals()[cmdlist.get(cmd,exe(cmd))]()
 #    getattr(__main__,cmdlist.get(cmd,'exe(cmd+\' &\')'))
     exec cmdlist.get(cmd,'exe(\''+cmd+'\')')
+
 else:
     doc()
