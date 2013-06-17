@@ -22,7 +22,7 @@ pics=home+'/Pictures/'
 git=docs+'git/'
 down=home+'/Downloads/'
 todofile=home+'/.o/todo'
-browser='google-chrome --audio-buffer-size=2048'
+browser='google-chrome'
 editor='gvim '
 musicplayer='deadbeef --play-pause'
 filebrowser='pcmanfm'
@@ -36,7 +36,7 @@ tmp=home+'/.o/tmp'
 # Define all functions here
 
 def doc():
-    print 'o launcher v'+version+' \nThe Python port [ at '+curlocation+'] \n\nmade by: syfluqs <syfluqs@gmail.com>'
+    print 'o launcher v'+version+' \nThe Python port \n\nmade by: syfluqs <syfluqs@gmail.com>'
 
 def msg(a):
     print green(a)
@@ -72,8 +72,7 @@ def internet():
     bookmarks = {
     'git':'https://github.com',
     'i':'--incognito',
-    'cc':'http://www.codecademy.com',
-    'router':'http://192.168.2.1/cgi-bin/status_deviceinfo.asp'
+    'cc':'http://www.codecademy.com'
     }
     #checking sub-arguement.
     if len(args)<2:
@@ -124,7 +123,7 @@ def getnetusage():
             down = float(l[1].split(':')[1])
             up = float(l[5].split(':')[1])
             total=round((up+down)/1000000,2)
-            print str(total),'MiB'
+            print str(total)+' MiB'
 
 def netmon():
     def update_timeText():
@@ -135,30 +134,14 @@ def netmon():
   
     root = tk.Tk()
     root.wm_title("NetMon")
-    timeText = tk.Label(root, text="", font=("DS-Digital", 22))
-    timeText.grid()
+    timeText = tk.Label(root, text="", font=("Ubuntu", 12))
+    timeText.pack()
     update_timeText()
     root.mainloop()
-    #thread.start_new_thread(netmon, ()) 
+    thread.start_new_thread(netmon, ()) 
 
 def netmon_extr():
     os.system(curlocation+' fnetmon &')
-
-def router_status():
-    user = 'admin'
-    password = 'IIgdifsbi8 - router'
-    address = 'http://192.168.2.1/cgi-bin/status_deviceinfo.asp'
-    auth_method = '-digest'
-    extras = '--silent'
-    
-    print colorize('Connecting...','#FFAA00')
-    p = subprocess.Popen('curl '+extras+' -u '+'\''+user+':'+password+'\' '+address+' '+auth_method+' | w3m -dump -T text/html',shell=True,stdout=subprocess.PIPE)
-    
-    for i in p.stdout:
-        if 'Status' in i:
-            print colorize(i.split()[0]+' : ','#00FF00'),colorize(' '.join(i.split()[1:]),'#FFFFFF')
-        elif 'Line State' in i:
-            print colorize(i.split()[0]+' '+i.split()[1]+' : ','#00FF00'),colorize(i.split()[2],'#FFFFFF')
 
 ############################################################################
 # the cmdlist
@@ -180,12 +163,6 @@ cmdlist = {
    'neof':'os.system(\'sudo ifconfig eth0 down\')',
    'list':'print cmdlist',
    'netmon':'netmon_extr()',
-   'c':'os.system(\'clear\')',
-   'rstat':'router_status()',
-   'lk':'exe(\'xtrlock\')',
-   'ff':'exe(\'/home/knoppix/scripts/firefox/firefox/firefox\')',
-
-############ fakes
    'fnetmon':'netmon()'
     }
 
