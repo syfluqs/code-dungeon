@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #mini launcher script: codename-o (Python port)
-version='2.2'
+version='2.3'
 # made by syfluqs <syfluqs@gmail.com>
 
 
@@ -24,10 +24,9 @@ down=home+'/Downloads/'
 todofile=home+'/.o/todo'
 browser='google-chrome --audio-buffer-size=2048'
 editor='gvim '
-musicplayer='deadbeef --play-pause'
 filebrowser='dbus-launch pcmanfm'
 curlocation=os.path.abspath(__file__)
-redir=' 2> /dev/null &'
+redir=' 2> /dev/null '
 out=''
 cmd=''
 tmp=home+'/.o/tmp'
@@ -36,13 +35,13 @@ tmp=home+'/.o/tmp'
 # Define all functions here
 
 def doc():
-    print 'o launcher v'+version+' \nThe Python port [ at '+curlocation+'] \n\nmade by: syfluqs <syfluqs@gmail.com>'
+    print 'o launcher v'+version+' \nThe Python port [ at '+curlocation+' ] \n\nmade by: syfluqs <syfluqs@gmail.com>',
 
 def msg(a):
-    print green(a)
+    print green(a),
 
 def err(a):
-    print red('ERROR: '+a)
+    print red('ERROR: '+a),
 
 def exe(s):
     #os.system(s+' &')
@@ -50,6 +49,13 @@ def exe(s):
         os.system(s+' &')
     except OSError:
         err('No Such file or directory')
+
+def exen(s):
+    try:
+        os.system(s)
+    except OSError:
+        err('No Such file or directory')
+
 
 def blobby():
     os.system('blobby'+redir)
@@ -73,7 +79,8 @@ def internet():
     'git':'https://github.com',
     'i':'--incognito',
     'cc':'http://www.codecademy.com',
-    'router':'http://192.168.2.1/cgi-bin/status_deviceinfo.asp'
+    'router':'http://192.168.2.1/cgi-bin/status_deviceinfo.asp',
+    'cups':'http://localhost:631/jobs'
     }
     #checking sub-arguement.
     if len(args)<2:
@@ -114,7 +121,22 @@ def bluetooth():
     exe('bluetooth-sendto'+redir)
 
 def music():
-    exe(musicplayer)
+    commands = {
+        '.':' -f',
+        'p':' -G',
+        ',':' -r',
+        'x':' -s'
+               }
+    p = subprocess.Popen('mocp -Q \'%title by %artist\'',shell=True,stdout=subprocess.PIPE)
+    o = p.stdout.read()
+
+    if len(args[1:])==0:
+        exen('mocp -G')
+        #exe('notify-send '+'\''+o+'\'')
+    else:
+        exen('mocp'+commands[args[1:][0]])
+        #exe('notify-send '+'\''+o+'\'') 
+
 
 def getnetusage():
     p = subprocess.Popen(['sudo','ifconfig','eth0'],stdout=subprocess.PIPE)
@@ -160,6 +182,54 @@ def router_status():
         elif 'Line State' in i:
             print colorize(i.split()[0]+' '+i.split()[1]+' : ','#00FF00'),colorize(i.split()[2],'#FFFFFF')
 
+def process():
+    if len(args)==1:
+        p = subprocess.Popen(['ps','-e'],stdout=subprocess.PIPE)
+        for i in p.stdout:
+            print i,
+                
+    else:
+        pr = args[1]
+        p = subprocess.Popen(['ps','-e'],stdout=subprocess.PIPE)
+        for i in p.stdout:
+            if pr in i:
+                print i,
+
+def term():
+    exe('notify-send '+'\''+os.environ['TERM']+'\'')
+
+def killer():
+    process = args[1:]
+    for i in process:
+        try:
+            pid = int(i)
+            exe('kill '+str(pid))
+        except ValueError:
+            pname = i
+            exe('killall '+pname) 
+
+def singleInst():
+    if len(args[1:])==1:
+        process = args[1]
+        p = subprocess.Popen(['o','p',process],stdout=subprocess.PIPE)
+        if p.stdout.read()=='':
+            msg(process+' not running. Starting '+process)
+            exe(process+redir)
+        else:
+            msg(process+' already running')
+    elif len(args[1:])==2:
+        process = args[1]
+        pmask = args[2]
+        p = subprocess.Popen(['o','p',pmask],stdout=subprocess.PIPE)
+        if p.stdout.read()=='':
+            msg(pmask+' not running. Starting '+pmask)
+            exe(process+redir)
+        else:
+            msg(process+' already running')
+        
+    else:
+        err('process required')
+
 ############################################################################
 # the cmdlist
 # is is an index of the arguements to their respective functions
@@ -182,8 +252,12 @@ cmdlist = {
    'netmon':'netmon_extr()',
    'c':'os.system(\'clear\')',
    'rstat':'router_status()',
-   'lk':'exe(\'xtrlock\')',
+   'lk':'exe(\'xscreensaver-command --lock\')',
    'ff':'exe(\'/home/knoppix/scripts/firefox/firefox/firefox\')',
+   'p':'process()',
+   'term':'term()',
+   'k':'killer()',
+   'singleInstance':'singleInst()',
 
 ############ fakes
    'fnetmon':'netmon()'
