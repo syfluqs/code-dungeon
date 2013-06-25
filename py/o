@@ -252,7 +252,7 @@ cmdlist = {
    'netmon':'netmon_extr()',
    'c':'os.system(\'clear\')',
    'rstat':'router_status()',
-   'lk':'exe(\'xscreensaver-command --lock\')',
+   'lk':'exe(\'xtrlock\')',
    'ff':'exe(\'/home/knoppix/scripts/firefox/firefox/firefox\')',
    'p':'process()',
    'term':'term()',
